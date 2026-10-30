@@ -25,19 +25,21 @@ public class LoanService {
         this.fineRepository = fineRepository;
     }
 
-    // D1 – safe save with date and duplicate checks
+    // before saving a loan I check two things:
+    // 1. the date cannot be in the past
+    // 2. the librarian should not already have a non-declined loan on that same day
+    // whatever status is sent in the body gets ignored, loan always starts as REQUESTED
     public Object save(Loan loan) {
         if (loan.getLoanDate().isBefore(LocalDate.now())) {
             return "Loan date cannot be in the past";
         }
 
-        boolean alreadyBusy = loanRepository.existsByLibrarianAndLoanDateAndStatusNot(
+        boolean librarianBusy = loanRepository.existsByLibrarianAndLoanDateAndStatusNot(
                 loan.getLibrarian(), loan.getLoanDate(), LoanStatus.DECLINED);
-        if (alreadyBusy) {
+        if (librarianBusy) {
             return "Librarian already issues a loan on that date";
         }
 
-        // new loan always starts as REQUESTED
         loan.setStatus(LoanStatus.REQUESTED);
         return loanRepository.save(loan);
     }
@@ -50,7 +52,8 @@ public class LoanService {
         return loanRepository.findById(id);
     }
 
-    // general update – does NOT change status (status only moves via changeStatus)
+    // regular update, only changes date, title, reader and librarian
+    // the status field is intentionally left out here, it only moves via changeStatus
     public Optional<Loan> update(UUID id, Loan updated) {
         return loanRepository.findById(id).map(existing -> {
             existing.setLoanDate(updated.getLoanDate());
@@ -61,7 +64,8 @@ public class LoanService {
         });
     }
 
-    // E3 – block delete when fines exist
+    // a loan with fines attached cannot be deleted
+    // the librarian must clear the fines first before removing the loan
     public String delete(UUID id) {
         Optional<Loan> opt = loanRepository.findById(id);
         if (opt.isEmpty()) return "The loan with that id does not exist";
@@ -75,17 +79,20 @@ public class LoanService {
         return "Loan deleted successfully";
     }
 
-    // B2 – loans by status, earliest first
+    // returns loans filtered by status sorted from oldest to newest
     public List<Loan> getByStatus(LoanStatus status) {
         return loanRepository.findByStatusOrderByLoanDateAsc(status);
     }
 
-    // B3 – loans in a date range
+    // returns loans within a date range, both start and end included
     public List<Loan> getBetween(LocalDate start, LocalDate end) {
         return loanRepository.findByLoanDateBetweenOrderByLoanDateAsc(start, end);
     }
 
-    // D2 – status flow enforcement
+    // status can only move forward along a fixed path:
+    // REQUESTED -> ISSUED or DECLINED
+    // ISSUED -> RETURNED or DECLINED
+    // RETURNED and DECLINED are final, nothing can move out of them
     public String changeStatus(UUID id, LoanStatus newStatus) {
         Optional<Loan> opt = loanRepository.findById(id);
         if (opt.isEmpty()) return "The loan with that id does not exist";
@@ -105,19 +112,20 @@ public class LoanService {
         return "Loan status updated successfully";
     }
 
-    // F1 – count per status
+    // groups loans by status and counts each group
     public List<Object[]> getStatsByStatus() {
         return loanRepository.groupByStatus();
     }
 
-    // F2 – bulk cancel a librarian's loans on a date
+    // sets all loans of a librarian on a given day to DECLINED in one query
+    // loans that are already RETURNED are skipped
     @Transactional
     public String cancelDay(UUID librarianId, LocalDate date) {
         int count = loanRepository.cancelLoansForLibrarianOnDate(librarianId, date);
         return count + " loans cancelled";
     }
 
-    // Bonus – paginated loans
+    // returns a page of loans, supports sorting and pagination from the controller
     public Page<Loan> getPage(Pageable pageable) {
         return loanRepository.findAll(pageable);
     }

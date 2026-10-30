@@ -8,7 +8,8 @@ import java.util.UUID;
 
 public interface GenreRepository extends JpaRepository<Genre, UUID> {
 
-    // C3 – genres that no librarian holds
+    // returns genres where no librarian holds them
+    // IS EMPTY works because Genre has the mappedBy side of the relationship
     @Query("SELECT g FROM Genre g WHERE g.librarians IS EMPTY")
     List<Genre> findUnusedGenres();
 }

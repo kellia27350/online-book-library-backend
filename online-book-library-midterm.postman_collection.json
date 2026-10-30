@@ -1,0 +1,156 @@
+{
+  "info": {
+    "name": "Online Book Library – Mid-Term",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "A2 – Save Genre",
+      "request": { "method": "POST", "header": [{"key":"Content-Type","value":"application/json"}], "body": {"mode":"raw","raw":"{\n  \"name\": \"Fiction\"\n}"}, "url": {"raw":"http://localhost:8080/api/genres/save","host":["localhost"],"port":"8080","path":["api","genres","save"]} }
+    },
+    {
+      "name": "A2 – Get All Genres",
+      "request": { "method": "GET", "url": {"raw":"http://localhost:8080/api/genres/all","host":["localhost"],"port":"8080","path":["api","genres","all"]} }
+    },
+    {
+      "name": "A2 – Get Genre by ID",
+      "request": { "method": "GET", "url": {"raw":"http://localhost:8080/api/genres/00000000-0000-0000-0000-000000000000","host":["localhost"],"port":"8080","path":["api","genres","00000000-0000-0000-0000-000000000000"]} }
+    },
+    {
+      "name": "A2 – Update Genre",
+      "request": { "method": "PUT", "header": [{"key":"Content-Type","value":"application/json"}], "body": {"mode":"raw","raw":"{\n  \"name\": \"Fiction Updated\"\n}"}, "url": {"raw":"http://localhost:8080/api/genres/update/00000000-0000-0000-0000-000000000000","host":["localhost"],"port":"8080","path":["api","genres","update","00000000-0000-0000-0000-000000000000"]} }
+    },
+    {
+      "name": "A2 – Delete Genre (404 test)",
+      "request": { "method": "DELETE", "url": {"raw":"http://localhost:8080/api/genres/delete/00000000-0000-0000-0000-000000000000","host":["localhost"],"port":"8080","path":["api","genres","delete","00000000-0000-0000-0000-000000000000"]} }
+    },
+    {
+      "name": "A2 – Save Counter",
+      "request": { "method": "POST", "header": [{"key":"Content-Type","value":"application/json"}], "body": {"mode":"raw","raw":"{\n  \"counterNumber\": 1,\n  \"name\": \"Counter One\"\n}"}, "url": {"raw":"http://localhost:8080/api/counters/save","host":["localhost"],"port":"8080","path":["api","counters","save"]} }
+    },
+    {
+      "name": "A2 – Get All Counters",
+      "request": { "method": "GET", "url": {"raw":"http://localhost:8080/api/counters/all","host":["localhost"],"port":"8080","path":["api","counters","all"]} }
+    },
+    {
+      "name": "A2 – Save Librarian",
+      "request": { "method": "POST", "header": [{"key":"Content-Type","value":"application/json"}], "body": {"mode":"raw","raw":"{\n  \"firstName\": \"William\",\n  \"lastName\": \"Mahoro\",\n  \"email\": \"william@library.rw\",\n  \"counter\": { \"id\": \"COUNTER-ID\" },\n  \"genres\": [ { \"id\": \"FICTION-ID\" } ]\n}"}, "url": {"raw":"http://localhost:8080/api/librarians/save","host":["localhost"],"port":"8080","path":["api","librarians","save"]} }
+    },
+    {
+      "name": "A2 – Get All Librarians",
+      "request": { "method": "GET", "url": {"raw":"http://localhost:8080/api/librarians/all","host":["localhost"],"port":"8080","path":["api","librarians","all"]} }
+    },
+    {
+      "name": "A2 – Save Reader",
+      "request": { "method": "POST", "header": [{"key":"Content-Type","value":"application/json"}], "body": {"mode":"raw","raw":"{\n  \"firstName\": \"Kellia\",\n  \"lastName\": \"Mahoro\",\n  \"cardNumber\": \"LIB-2026-0088\",\n  \"email\": \"kellia@lib.rw\"\n}"}, "url": {"raw":"http://localhost:8080/api/readers/save","host":["localhost"],"port":"8080","path":["api","readers","save"]} }
+    },
+    {
+      "name": "A2 – Get All Readers",
+      "request": { "method": "GET", "url": {"raw":"http://localhost:8080/api/readers/all","host":["localhost"],"port":"8080","path":["api","readers","all"]} }
+    },
+    {
+      "name": "A2 – Save Loan",
+      "request": { "method": "POST", "header": [{"key":"Content-Type","value":"application/json"}], "body": {"mode":"raw","raw":"{\n  \"loanDate\": \"2026-10-29\",\n  \"bookTitle\": \"The Great Gatsby\",\n  \"reader\": { \"id\": \"READER-ID\" },\n  \"librarian\": { \"id\": \"LIBRARIAN-ID\" }\n}"}, "url": {"raw":"http://localhost:8080/api/loans/save","host":["localhost"],"port":"8080","path":["api","loans","save"]} }
+    },
+    {
+      "name": "A2 – Get All Loans",
+      "request": { "method": "GET", "url": {"raw":"http://localhost:8080/api/loans/all","host":["localhost"],"port":"8080","path":["api","loans","all"]} }
+    },
+    {
+      "name": "A2 – Delete Loan (404 test)",
+      "request": { "method": "DELETE", "url": {"raw":"http://localhost:8080/api/loans/delete/00000000-0000-0000-0000-000000000000","host":["localhost"],"port":"8080","path":["api","loans","delete","00000000-0000-0000-0000-000000000000"]} }
+    },
+    {
+      "name": "B1 – Readers by last name",
+      "request": { "method": "GET", "url": {"raw":"http://localhost:8080/api/readers/by-last-name?lastName=mahoro","host":["localhost"],"port":"8080","path":["api","readers","by-last-name"],"query":[{"key":"lastName","value":"mahoro"}]} }
+    },
+    {
+      "name": "B2 – Loans by status REQUESTED",
+      "request": { "method": "GET", "url": {"raw":"http://localhost:8080/api/loans/by-status?status=REQUESTED","host":["localhost"],"port":"8080","path":["api","loans","by-status"],"query":[{"key":"status","value":"REQUESTED"}]} }
+    },
+    {
+      "name": "B3 – Loans between dates",
+      "request": { "method": "GET", "url": {"raw":"http://localhost:8080/api/loans/between?start=2026-10-01&end=2026-10-31","host":["localhost"],"port":"8080","path":["api","loans","between"],"query":[{"key":"start","value":"2026-10-01"},{"key":"end","value":"2026-10-31"}]} }
+    },
+    {
+      "name": "C1 – Librarians by genre",
+      "request": { "method": "GET", "url": {"raw":"http://localhost:8080/api/librarians/by-genre?name=fiction","host":["localhost"],"port":"8080","path":["api","librarians","by-genre"],"query":[{"key":"name","value":"fiction"}]} }
+    },
+    {
+      "name": "C2 – Free counters",
+      "request": { "method": "GET", "url": {"raw":"http://localhost:8080/api/counters/free","host":["localhost"],"port":"8080","path":["api","counters","free"]} }
+    },
+    {
+      "name": "C3 – Unused genres",
+      "request": { "method": "GET", "url": {"raw":"http://localhost:8080/api/genres/unused","host":["localhost"],"port":"8080","path":["api","genres","unused"]} }
+    },
+    {
+      "name": "C4 – Readers of librarian",
+      "request": { "method": "GET", "url": {"raw":"http://localhost:8080/api/readers/of-librarian/24df6447-1fa6-4ca3-931f-85fe16ed3264","host":["localhost"],"port":"8080","path":["api","readers","of-librarian","24df6447-1fa6-4ca3-931f-85fe16ed3264"]} }
+    },
+    {
+      "name": "C4 – Readers of librarian (404 test)",
+      "request": { "method": "GET", "url": {"raw":"http://localhost:8080/api/readers/of-librarian/00000000-0000-0000-0000-000000000000","host":["localhost"],"port":"8080","path":["api","readers","of-librarian","00000000-0000-0000-0000-000000000000"]} }
+    },
+    {
+      "name": "D1 – Reject past date",
+      "request": { "method": "POST", "header": [{"key":"Content-Type","value":"application/json"}], "body": {"mode":"raw","raw":"{\n  \"loanDate\": \"2026-10-01\",\n  \"bookTitle\": \"Test\",\n  \"reader\": { \"id\": \"90ffc554-df14-4417-b82e-e0fc88a05945\" },\n  \"librarian\": { \"id\": \"24df6447-1fa6-4ca3-931f-85fe16ed3264\" }\n}"}, "url": {"raw":"http://localhost:8080/api/loans/save","host":["localhost"],"port":"8080","path":["api","loans","save"]} }
+    },
+    {
+      "name": "D1 – Reject duplicate librarian on same date",
+      "request": { "method": "POST", "header": [{"key":"Content-Type","value":"application/json"}], "body": {"mode":"raw","raw":"{\n  \"loanDate\": \"2026-10-29\",\n  \"bookTitle\": \"Duplicate\",\n  \"reader\": { \"id\": \"50380127-8340-4d72-b305-ffd3253f0fbe\" },\n  \"librarian\": { \"id\": \"24df6447-1fa6-4ca3-931f-85fe16ed3264\" }\n}"}, "url": {"raw":"http://localhost:8080/api/loans/save","host":["localhost"],"port":"8080","path":["api","loans","save"]} }
+    },
+    {
+      "name": "D2 – Change status REQUESTED to ISSUED",
+      "request": { "method": "PATCH", "url": {"raw":"http://localhost:8080/api/loans/LOAN-ID/status?status=ISSUED","host":["localhost"],"port":"8080","path":["api","loans","LOAN-ID","status"],"query":[{"key":"status","value":"ISSUED"}]} }
+    },
+    {
+      "name": "D2 – Illegal status move (400)",
+      "request": { "method": "PATCH", "url": {"raw":"http://localhost:8080/api/loans/LOAN-ID/status?status=REQUESTED","host":["localhost"],"port":"8080","path":["api","loans","LOAN-ID","status"],"query":[{"key":"status","value":"REQUESTED"}]} }
+    },
+    {
+      "name": "D3 – Add genre to librarian",
+      "request": { "method": "PUT", "url": {"raw":"http://localhost:8080/api/librarians/24df6447-1fa6-4ca3-931f-85fe16ed3264/genres/3a73b960-9455-41b8-9973-7e752d69f5e0","host":["localhost"],"port":"8080","path":["api","librarians","24df6447-1fa6-4ca3-931f-85fe16ed3264","genres","3a73b960-9455-41b8-9973-7e752d69f5e0"]} }
+    },
+    {
+      "name": "D4 – Move librarian to counter",
+      "request": { "method": "PATCH", "url": {"raw":"http://localhost:8080/api/librarians/33a9e503-5ac9-486f-9ef5-38a1744c7cb0/counter?counterNumber=4","host":["localhost"],"port":"8080","path":["api","librarians","33a9e503-5ac9-486f-9ef5-38a1744c7cb0","counter"],"query":[{"key":"counterNumber","value":"4"}]} }
+    },
+    {
+      "name": "E1 – Write fine on RETURNED loan",
+      "request": { "method": "POST", "header": [{"key":"Content-Type","value":"application/json"}], "body": {"mode":"raw","raw":"{\n  \"reason\": \"Late return\",\n  \"note\": \"Returned five days after the due date\",\n  \"amount\": 500\n}"}, "url": {"raw":"http://localhost:8080/api/fines/save?loanId=1ca00041-fc89-4d86-b38f-987d7022a501","host":["localhost"],"port":"8080","path":["api","fines","save"],"query":[{"key":"loanId","value":"1ca00041-fc89-4d86-b38f-987d7022a501"}]} }
+    },
+    {
+      "name": "E1 – Fine on non-RETURNED loan (400)",
+      "request": { "method": "POST", "header": [{"key":"Content-Type","value":"application/json"}], "body": {"mode":"raw","raw":"{\n  \"reason\": \"Late return\",\n  \"note\": \"Test\",\n  \"amount\": 500\n}"}, "url": {"raw":"http://localhost:8080/api/fines/save?loanId=35a68061-b6ba-4129-8f91-65439f3ac2d8","host":["localhost"],"port":"8080","path":["api","fines","save"],"query":[{"key":"loanId","value":"35a68061-b6ba-4129-8f91-65439f3ac2d8"}]} }
+    },
+    {
+      "name": "E2 – Fine history by card number",
+      "request": { "method": "GET", "url": {"raw":"http://localhost:8080/api/fines/reader/LIB-2026-0088","host":["localhost"],"port":"8080","path":["api","fines","reader","LIB-2026-0088"]} }
+    },
+    {
+      "name": "E3 – Delete fine (404 test)",
+      "request": { "method": "DELETE", "url": {"raw":"http://localhost:8080/api/fines/delete/00000000-0000-0000-0000-000000000000","host":["localhost"],"port":"8080","path":["api","fines","delete","00000000-0000-0000-0000-000000000000"]} }
+    },
+    {
+      "name": "E3 – Delete loan with fines (409)",
+      "request": { "method": "DELETE", "url": {"raw":"http://localhost:8080/api/loans/delete/1ca00041-fc89-4d86-b38f-987d7022a501","host":["localhost"],"port":"8080","path":["api","loans","delete","1ca00041-fc89-4d86-b38f-987d7022a501"]} }
+    },
+    {
+      "name": "F1 – Loans stats by status",
+      "request": { "method": "GET", "url": {"raw":"http://localhost:8080/api/loans/stats/by-status","host":["localhost"],"port":"8080","path":["api","loans","stats","by-status"]} }
+    },
+    {
+      "name": "F2 – Cancel day",
+      "request": { "method": "PATCH", "url": {"raw":"http://localhost:8080/api/loans/cancel-day?librarianId=24df6447-1fa6-4ca3-931f-85fe16ed3264&date=2026-11-04","host":["localhost"],"port":"8080","path":["api","loans","cancel-day"],"query":[{"key":"librarianId","value":"24df6447-1fa6-4ca3-931f-85fe16ed3264"},{"key":"date","value":"2026-11-04"}]} }
+    },
+    {
+      "name": "Bonus – Dashboard summary",
+      "request": { "method": "GET", "url": {"raw":"http://localhost:8080/api/dashboard/summary","host":["localhost"],"port":"8080","path":["api","dashboard","summary"]} }
+    },
+    {
+      "name": "Bonus – Paginated loans",
+      "request": { "method": "GET", "url": {"raw":"http://localhost:8080/api/loans/page?page=0&size=5&sort=loanDate,desc","host":["localhost"],"port":"8080","path":["api","loans","page"],"query":[{"key":"page","value":"0"},{"key":"size","value":"5"},{"key":"sort","value":"loanDate,desc"}]} }
+    }
+  ]
+}

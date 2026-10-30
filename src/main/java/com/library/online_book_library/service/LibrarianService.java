@@ -58,12 +58,12 @@ public class LibrarianService {
         return false;
     }
 
-    // C1 – librarians by genre name
+    // finds librarians who hold a specific genre, case does not matter
     public List<Librarian> getByGenreName(String name) {
         return librarianRepository.findByGenreName(name);
     }
 
-    // C4 – distinct readers for a librarian
+    // returns all distinct readers who have at least one loan with this librarian
     public Object getReadersByLibrarianId(UUID librarianId) {
         if (!librarianRepository.existsById(librarianId)) {
             return "The librarian with that id does not exist";
@@ -71,7 +71,8 @@ public class LibrarianService {
         return librarianRepository.findReadersByLibrarianId(librarianId);
     }
 
-    // D3 – add a genre to a librarian
+    // adds a genre to the librarian's list without removing what they already hold
+    // Librarian owns the join table so I add to the list and save the librarian
     public String addGenre(UUID librarianId, UUID genreId) {
         Optional<Librarian> libOpt = librarianRepository.findById(librarianId);
         if (libOpt.isEmpty()) return "The librarian with that id does not exist";
@@ -91,7 +92,8 @@ public class LibrarianService {
         return "Genre added to the librarian";
     }
 
-    // D4 – move librarian to another counter
+    // moves a librarian from their current counter to a new one
+    // checks that the target counter is not already taken by someone else
     public String changeCounter(UUID librarianId, int counterNumber) {
         Optional<Librarian> libOpt = librarianRepository.findById(librarianId);
         if (libOpt.isEmpty()) return "The librarian with that id does not exist";
@@ -102,9 +104,7 @@ public class LibrarianService {
         Librarian librarian = libOpt.get();
         var counter = counterOpt.get();
 
-        // check if another librarian already sits there
         boolean taken = librarianRepository.existsByCounter(counter);
-        // allow reassignment to the same counter the librarian already has
         if (taken && !counter.equals(librarian.getCounter())) {
             return "That counter is taken by another librarian";
         }

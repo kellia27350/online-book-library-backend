@@ -23,7 +23,8 @@ public class FineService {
         this.loanRepository = loanRepository;
     }
 
-    // E1 – write a fine only for RETURNED loans
+    // a fine can only be written after the book has been returned
+    // the charged date is set automatically to today, the client does not send it
     public Object save(Fine fine, UUID loanId) {
         Optional<Loan> loanOpt = loanRepository.findById(loanId);
         if (loanOpt.isEmpty()) return "The loan with that id does not exist";
@@ -46,12 +47,12 @@ public class FineService {
         return fineRepository.findById(id);
     }
 
-    // E2 – fine history for a reader by card number
+    // looks up all fines for a reader using their card number
+    // navigates through fine -> loan -> reader to match the cardNumber
     public List<Fine> getByReaderCardNumber(String cardNumber) {
         return fineRepository.findByReaderCardNumber(cardNumber);
     }
 
-    // E3 – delete a fine
     public String delete(UUID id) {
         if (!fineRepository.existsById(id)) {
             return "The fine with that id does not exist";

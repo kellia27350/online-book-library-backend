@@ -9,10 +9,11 @@ import java.util.UUID;
 
 public interface CounterRepository extends JpaRepository<Counter, UUID> {
 
-    // D4 – find counter by its number
+    // find a counter by its number, used when moving a librarian
     Optional<Counter> findByCounterNumber(int counterNumber);
 
-    // C2 – counters with no librarian assigned, sorted by counterNumber
+    // returns counters that no librarian is currently sitting at
+    // using NOT EXISTS because a counter with no librarian has nothing to join on
     @Query("SELECT c FROM Counter c WHERE NOT EXISTS (SELECT l FROM Librarian l WHERE l.counter = c) ORDER BY c.counterNumber")
     List<Counter> findFreeCounters();
 }

@@ -13,27 +13,28 @@ import java.util.UUID;
 
 public interface LoanRepository extends JpaRepository<Loan, UUID> {
 
-    // B2 – loans filtered by status, oldest first
+    // get loans by status sorted oldest first
     List<Loan> findByStatusOrderByLoanDateAsc(LoanStatus status);
 
-    // B3 – loans within a date range, sorted by loanDate
+    // get loans that fall between two dates, sorted by date
     List<Loan> findByLoanDateBetweenOrderByLoanDateAsc(LocalDate start, LocalDate end);
 
-    // D1 – check if a librarian already has a non-DECLINED loan on a given date
+    // check if a librarian already has a loan on a date that is not declined
     boolean existsByLibrarianAndLoanDateAndStatusNot(Librarian librarian, LocalDate loanDate, LoanStatus status);
 
-    // F1 – count loans grouped by status
+    // count how many loans exist per status
     @Query("SELECT lo.status, COUNT(lo) FROM Loan lo GROUP BY lo.status")
     List<Object[]> groupByStatus();
 
-    // F2 – bulk cancel loans for a librarian on a date (skip already RETURNED)
+    // set all loans of a librarian on a specific date to DECLINED
+    // skips loans that are already RETURNED
     @Modifying(clearAutomatically = true)
     @Query("UPDATE Loan lo SET lo.status = com.library.online_book_library.entity.LoanStatus.DECLINED WHERE lo.librarian.id = :librarianId AND lo.loanDate = :date AND lo.status <> com.library.online_book_library.entity.LoanStatus.RETURNED")
     int cancelLoansForLibrarianOnDate(@Param("librarianId") UUID librarianId, @Param("date") LocalDate date);
 
-    // dashboard – count loans by specific status
+    // used by the dashboard to count loans with a specific status
     long countByStatus(LoanStatus status);
 
-    // dashboard – loans created today
+    // used by the dashboard to count how many loans were created today
     long countByLoanDate(LocalDate date);
 }
