@@ -55,13 +55,11 @@ public class LibrarianController {
         return ResponseEntity.ok("Librarian deleted successfully");
     }
 
-    // search librarians by the genre they hold, name is case insensitive
     @GetMapping("/by-genre")
     public ResponseEntity<?> byGenre(@RequestParam String name) {
         return ResponseEntity.ok(librarianService.getByGenreName(name));
     }
 
-    // adds a genre to a librarian without removing the ones they already have
     @PutMapping("/{librarianId}/genres/{genreId}")
     public ResponseEntity<?> addGenre(@PathVariable UUID librarianId, @PathVariable UUID genreId) {
         String result = librarianService.addGenre(librarianId, genreId);
@@ -74,7 +72,6 @@ public class LibrarianController {
         return ResponseEntity.status(HttpStatus.CONFLICT).body(result);
     }
 
-    // moves a librarian to a different counter
     @PatchMapping("/{librarianId}/counter")
     public ResponseEntity<?> changeCounter(@PathVariable UUID librarianId, @RequestParam int counterNumber) {
         String result = librarianService.changeCounter(librarianId, counterNumber);

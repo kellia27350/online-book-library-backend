@@ -18,7 +18,6 @@ public class FineController {
         this.fineService = fineService;
     }
 
-    // loanId comes as a request param, the fine body comes in the request body
     @PostMapping("/save")
     public ResponseEntity<?> save(@RequestBody Fine fine, @RequestParam UUID loanId) {
         Object result = fineService.save(fine, loanId);
@@ -45,7 +44,6 @@ public class FineController {
         return ResponseEntity.ok(fine.get());
     }
 
-    // looks up all fines for a reader by their card number
     @GetMapping("/reader/{cardNumber}")
     public ResponseEntity<?> byReader(@PathVariable String cardNumber) {
         return ResponseEntity.ok(fineService.getByReaderCardNumber(cardNumber));

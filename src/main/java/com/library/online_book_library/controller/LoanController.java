@@ -50,8 +50,6 @@ public class LoanController {
         return ResponseEntity.ok(loan.get());
     }
 
-    // this update does not touch the status field on purpose
-    // status only changes through the patch endpoint below
     @PutMapping("/update/{id}")
     public ResponseEntity<?> update(@PathVariable UUID id, @RequestBody Loan loan) {
         var updated = loanService.update(id, loan);
@@ -78,7 +76,6 @@ public class LoanController {
         return ResponseEntity.ok(loanService.getByStatus(status));
     }
 
-    // dates come in as strings and get parsed to LocalDate in the controller
     @GetMapping("/between")
     public ResponseEntity<?> between(@RequestParam String start, @RequestParam String end) {
         LocalDate from = LocalDate.parse(start);
@@ -86,7 +83,6 @@ public class LoanController {
         return ResponseEntity.ok(loanService.getBetween(from, to));
     }
 
-    // the only place where loan status can change
     @PatchMapping("/{id}/status")
     public ResponseEntity<?> changeStatus(@PathVariable UUID id, @RequestParam LoanStatus status) {
         String result = loanService.changeStatus(id, status);
@@ -110,7 +106,6 @@ public class LoanController {
         return ResponseEntity.ok(loanService.cancelDay(librarianId, parsedDate));
     }
 
-    // pagination — page, size and sort come from the request params
     @GetMapping("/page")
     public ResponseEntity<Page<Loan>> page(
             @RequestParam(defaultValue = "0") int page,

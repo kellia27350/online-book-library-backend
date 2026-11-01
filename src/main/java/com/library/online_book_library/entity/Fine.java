@@ -17,8 +17,6 @@ public class Fine {
     private int amount;
     private LocalDate chargedDate;
 
-    // fine belongs to a loan, loan_id is the foreign key
-    // I do not add a List<Fine> back to Loan to keep things simple
     @ManyToOne
     @JoinColumn(name = "loan_id")
     private Loan loan;

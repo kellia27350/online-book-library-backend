@@ -25,10 +25,6 @@ public class LoanService {
         this.fineRepository = fineRepository;
     }
 
-    // before saving a loan I check two things:
-    // 1. the date cannot be in the past
-    // 2. the librarian should not already have a non-declined loan on that same day
-    // whatever status is sent in the body gets ignored, loan always starts as REQUESTED
     public Object save(Loan loan) {
         if (loan.getLoanDate().isBefore(LocalDate.now())) {
             return "Loan date cannot be in the past";
@@ -52,8 +48,6 @@ public class LoanService {
         return loanRepository.findById(id);
     }
 
-    // regular update, only changes date, title, reader and librarian
-    // the status field is intentionally left out here, it only moves via changeStatus
     public Optional<Loan> update(UUID id, Loan updated) {
         return loanRepository.findById(id).map(existing -> {
             existing.setLoanDate(updated.getLoanDate());
@@ -64,8 +58,6 @@ public class LoanService {
         });
     }
 
-    // a loan with fines attached cannot be deleted
-    // the librarian must clear the fines first before removing the loan
     public String delete(UUID id) {
         Optional<Loan> opt = loanRepository.findById(id);
         if (opt.isEmpty()) return "The loan with that id does not exist";
@@ -79,20 +71,14 @@ public class LoanService {
         return "Loan deleted successfully";
     }
 
-    // returns loans filtered by status sorted from oldest to newest
     public List<Loan> getByStatus(LoanStatus status) {
         return loanRepository.findByStatusOrderByLoanDateAsc(status);
     }
 
-    // returns loans within a date range, both start and end included
     public List<Loan> getBetween(LocalDate start, LocalDate end) {
         return loanRepository.findByLoanDateBetweenOrderByLoanDateAsc(start, end);
     }
 
-    // status can only move forward along a fixed path:
-    // REQUESTED -> ISSUED or DECLINED
-    // ISSUED -> RETURNED or DECLINED
-    // RETURNED and DECLINED are final, nothing can move out of them
     public String changeStatus(UUID id, LoanStatus newStatus) {
         Optional<Loan> opt = loanRepository.findById(id);
         if (opt.isEmpty()) return "The loan with that id does not exist";
@@ -112,20 +98,16 @@ public class LoanService {
         return "Loan status updated successfully";
     }
 
-    // groups loans by status and counts each group
     public List<Object[]> getStatsByStatus() {
         return loanRepository.groupByStatus();
     }
 
-    // sets all loans of a librarian on a given day to DECLINED in one query
-    // loans that are already RETURNED are skipped
     @Transactional
     public String cancelDay(UUID librarianId, LocalDate date) {
         int count = loanRepository.cancelLoansForLibrarianOnDate(librarianId, date);
         return count + " loans cancelled";
     }
 
-    // returns a page of loans, supports sorting and pagination from the controller
     public Page<Loan> getPage(Pageable pageable) {
         return loanRepository.findAll(pageable);
     }

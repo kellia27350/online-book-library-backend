@@ -55,7 +55,6 @@ public class GenreController {
         return ResponseEntity.ok("Genre deleted successfully");
     }
 
-    // returns genres that no librarian currently holds
     @GetMapping("/unused")
     public ResponseEntity<?> unused() {
         return ResponseEntity.ok(genreService.getUnusedGenres());

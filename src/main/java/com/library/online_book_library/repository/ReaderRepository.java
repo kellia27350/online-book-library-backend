@@ -8,9 +8,7 @@ import java.util.UUID;
 
 public interface ReaderRepository extends JpaRepository<Reader, UUID> {
 
-    // B1 – readers by last name, case-insensitive, sorted A→Z by firstName
     List<Reader> findByLastNameIgnoreCaseOrderByFirstNameAsc(String lastName);
 
-    // E2 – look up reader by card number
     Optional<Reader> findByCardNumber(String cardNumber);
 }

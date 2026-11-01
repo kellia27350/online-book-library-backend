@@ -17,13 +17,10 @@ public class Librarian {
     private String lastName;
     private String email;
 
-    // a librarian sits at one counter, counter_id is the foreign key
     @ManyToOne
     @JoinColumn(name = "counter_id")
     private Counter counter;
 
-    // librarian owns this relationship, the join table is librarian_genre
-    // initialized as empty list so .contains() never throws NullPointerException
     @ManyToMany
     @JoinTable(name = "librarian_genre")
     private List<Genre> genres = new ArrayList<>();

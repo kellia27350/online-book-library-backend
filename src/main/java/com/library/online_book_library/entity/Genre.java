@@ -15,7 +15,6 @@ public class Genre {
 
     private String name;
 
-    // hiding this from JSON to avoid infinite loop between genre and librarian
     @JsonIgnore
     @ManyToMany(mappedBy = "genres")
     private List<Librarian> librarians;
