@@ -44,7 +44,6 @@ public class GenreService {
         return false;
     }
 
-    // C3 – genres nobody holds
     public List<Genre> getUnusedGenres() {
         return genreRepository.findUnusedGenres();
     }

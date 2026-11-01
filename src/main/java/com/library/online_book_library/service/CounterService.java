@@ -45,7 +45,6 @@ public class CounterService {
         return false;
     }
 
-    // C2 – counters with no librarian assigned
     public List<Counter> getFreeCounters() {
         return counterRepository.findFreeCounters();
     }

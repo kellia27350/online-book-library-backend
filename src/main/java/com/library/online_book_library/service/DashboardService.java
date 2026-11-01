@@ -31,12 +31,12 @@ public class DashboardService {
 
     public Map<String, Long> getSummary() {
         Map<String, Long> summary = new LinkedHashMap<>();
-        summary.put("readers",      readerRepository.count());
-        summary.put("librarians",   librarianRepository.count());
+        summary.put("readers", readerRepository.count());
+        summary.put("librarians", librarianRepository.count());
         summary.put("freeCounters", (long) counterRepository.findFreeCounters().size());
-        summary.put("loansToday",   loanRepository.countByLoanDate(LocalDate.now()));
-        summary.put("requested",    loanRepository.countByStatus(LoanStatus.REQUESTED));
-        summary.put("fines",        fineRepository.count());
+        summary.put("loansToday", loanRepository.countByLoanDate(LocalDate.now()));
+        summary.put("requested", loanRepository.countByStatus(LoanStatus.REQUESTED));
+        summary.put("fines", fineRepository.count());
         return summary;
     }
 }

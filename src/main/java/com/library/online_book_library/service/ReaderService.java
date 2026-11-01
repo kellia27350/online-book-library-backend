@@ -47,7 +47,6 @@ public class ReaderService {
         return false;
     }
 
-    // B1 – readers by last name, case-insensitive, sorted by firstName
     public List<Reader> getByLastName(String lastName) {
         return readerRepository.findByLastNameIgnoreCaseOrderByFirstNameAsc(lastName);
     }
